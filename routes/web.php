@@ -16,4 +16,5 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', 'TasksController@index')->name('index');
 Route::get('/create', 'TasksController@form')->name('form');
 Route::post('/taskdata', 'TasksController@taskData')->name('taskData');
-Route::put('/updatetask', 'TasksController@taskData')->name('taskData');
+Route::put('/edit', 'TasksController@edit')->name('edit');
+Route::post('/comment/create', 'CommentsController@create')->name('commentCreate');

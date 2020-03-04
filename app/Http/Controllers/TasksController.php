@@ -26,15 +26,15 @@ class TasksController extends Controller
 
     public function tasksTodo()
     {
-        return Task::where('status' , 'TODO')->orderBy('created_at')->get();
+        return Task::where('status' , 'TODO')->with('comments')->orderBy('created_at')->get();
     }
     public function tasksDoing()
     {
-        return Task::where('status' , 'DOING')->orderBy('created_at')->get();
+        return Task::where('status' , 'DOING')->with('comments')->orderBy('created_at')->get();
     }
     public function tasksDone()
     {
-        return Task::where('status' , 'DONE')->orderBy('created_at')->get();
+        return Task::where('status' , 'DONE')->with('comments')->orderBy('created_at')->get();
     }
 
     public function show(Banner $banner)
@@ -53,9 +53,21 @@ class TasksController extends Controller
         return response()->json(['task' => $task, 'comments' => $comments]);
     }
 
-    public function edit()
+    public function edit(Request $request)
     {
+        $input = $request->all();
 
-//        return redirect()->route('admin.banners.show', $banner);
+        $id = $input['data']['id'];
+        $name = $input['data']['name'];
+        $description = $input['data']['description'];
+        $status = $input['data']['status'];
+
+        $task = Task::findOrFail($id);
+        $task->name = $name;
+        $task->description = $description;
+        $task->status = $status;
+        $task->save();
+
+        return response()->json(['success' => true]);
     }
 }
