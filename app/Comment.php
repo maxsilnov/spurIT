@@ -8,6 +8,6 @@ class Comment extends Model
 {
     public function task()
     {
-        return $this->belongsTo('App\Task');
+        return $this->belongsTo('App\Task')->orderBy('created_at', 'DESC');
     }
 }

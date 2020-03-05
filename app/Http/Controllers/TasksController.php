@@ -68,6 +68,25 @@ class TasksController extends Controller
         $task->status = $status;
         $task->save();
 
-        return response()->json(['success' => true]);
+        return response()->json(['task' => $task]);
     }
+
+    public function create(Request $request)
+    {
+
+        $input = $request->all();
+//        return response()->json(['task' => $input]);
+        $name = $input['data']['name'];
+        $description = $input['data']['description'];
+        $status = $input['data']['status'];
+
+        $task = new Task();
+        $task->name = $name;
+        $task->description = $description;
+        $task->status = $status;
+        $task->save();
+
+        return response()->json(['task' => $task]);
+    }
+
 }

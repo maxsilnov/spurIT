@@ -18,3 +18,4 @@ Route::get('/create', 'TasksController@form')->name('form');
 Route::post('/taskdata', 'TasksController@taskData')->name('taskData');
 Route::put('/edit', 'TasksController@edit')->name('edit');
 Route::post('/comment/create', 'CommentsController@create')->name('commentCreate');
+Route::post('/create', 'TasksController@create')->name('taskCreate');
