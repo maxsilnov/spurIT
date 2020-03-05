@@ -6,5 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Comment extends Model
 {
-    //
+    public function task()
+    {
+        return $this->belongsTo('App\Task')->orderBy('created_at', 'DESC');
+    }
 }
