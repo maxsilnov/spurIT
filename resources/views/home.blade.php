@@ -10,7 +10,7 @@
         </div>
         <div class="pb-0 tasks">
             <div class="row">
-                <div class="col-md-12 text-center">
+                <div class="col-md-12 text-center ">
                     @if ($tasksTodo)
                         <div class="col-md-4 task-todo float-left ">
                             <table class="table table-bordered">
@@ -291,6 +291,13 @@
             });
 
             function checkUpdateTask(id){
+                var todo = $('.task-todo tbody');
+                var doing = $('.task-doing tbody');
+                var done = $('.task-done tbody');
+                var todoTr = todo.find('tr');
+                var doingTr = doing.find('tr');
+                var doneTr = done.find('tr');
+                var tableTr ='';
                 $.ajax({
 
                     type:'POST',
@@ -303,15 +310,15 @@
 
                     success:function(data){
 
-                        var link = $('a[data-id="' + id +'"]');
+                        var link = $('.tasks a[data-id="' + id +'"]');
                         if(link.length >0){
-                            var parent = link.parents('tr');
+                            var parent = link.parents('tr.text-center');
                         }else{
                             var parent = $('.task-link tr').clone();
                             var link = parent.find('.open_modal').attr({'data-id' : id})
                         }
-
-                        var table = '';
+                        console.log($('a[data-id="' + id +'"]'));
+                        var table = 0;
                         parent.find('.name').text('Task: ' + data.task.name);
                         parent.find('.name').text('Task: ' + data.task.name);
                         parent.find('.date-create').html('Date create: <div class="time">' + dateFormat(data.task.created_at, "yyyy-mm-dd HH:MM:ss" + '</div>'));
@@ -322,25 +329,29 @@
                                 console.log(1);
                                 cloneTask = parent.clone();
                                 parent.remove();
-                                table = $('.task-todo tbody');
+                                table = todo;
+                                tableTr = todoTr;
                                 break;
                             case 'DOING':
                                 console.log(2);
                                 cloneTask = parent.clone();
                                 parent.remove();
-                                table = $('.task-doing tbody');
+                                table = doing;
+                                tableTr = doingTr;
                                 break;
                             case 'DONE':
                                 console.log(3);
                                 cloneTask = parent.clone();
                                 parent.remove();
-                                table = $('.task-done tbody');
+                                table = done;
+                                tableTr = doneTr;
                                 break;
                         }
-                        if(table.find('tr').length > 0){
+                        // console.log(tableTr);
+                        if(tableTr.length > 1){
                             var check = 0;
                             console.log(4);
-                            table.find('tr').each(function(event){
+                            tableTr.each(function(event){
                                 console.log(parseInt(dateFormat(data.task.created_at, "UTC:yyyymmddHHMMss"))); // мое
                                 console.log(parseInt(dateFormat($(this).find('.time').text(), "UTC:yyyymmddHHMMss"))); // общее
                                 // console.log($(this).find('.time').text());
@@ -349,13 +360,14 @@
                                     $(this).before(cloneTask);
                                     check = 1;
                                     return false;
-
                                 }
                             });
                             if(check == 0){
                                 console.log(111111);
                                 table.append(cloneTask);
                             }
+                        }else if (tableTr.length == 1){
+                            table.html(cloneTask);
                         }else{
                             console.log(5);
                             table.append(cloneTask);
